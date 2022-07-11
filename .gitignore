@@ -38,3 +38,8 @@ HELP.md
 mvnw
 mvnw.cmd
 .mvn
+
+frontend
+*.json
+*js
+*.ts
