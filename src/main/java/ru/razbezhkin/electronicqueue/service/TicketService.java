@@ -1,38 +1,38 @@
 package ru.razbezhkin.electronicqueue.service;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import ru.razbezhkin.electronicqueue.domain.User;
-import ru.razbezhkin.electronicqueue.domain.UserTicket;
+import ru.razbezhkin.electronicqueue.domain.Room;
+import ru.razbezhkin.electronicqueue.domain.Ticket;
+import ru.razbezhkin.electronicqueue.domain.TicketDto;
+import ru.razbezhkin.electronicqueue.mapper.TicketMapper;
+import ru.razbezhkin.electronicqueue.provider.RoomsDataProvider;
+import ru.razbezhkin.electronicqueue.provider.ScheduleDataProvider;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class TicketService {
 
-    private final List<UserTicket> busyTime = new ArrayList<>();
+    private final ScheduleDataProvider scheduleService;
+    private final RoomsDataProvider roomsDataProvider;
 
-    public List<LocalTime> getInitialTimeForTicket() {
-        List<LocalTime> times = new ArrayList<>();
-        for (int i = 9; i <= 18; i++) {
-            times.add(LocalTime.of(i, 0));
-        }
-        return times;
+    public List<TicketDto> getAllFreeTickets() {
+        List<LocalDateTime> todaySchedule = scheduleService.getTodaySchedule();
+
+        return roomsDataProvider.getAllRooms().stream()
+                .flatMap(it -> createTicketForRoom(it, todaySchedule).stream())
+                .map(TicketMapper::toTicketDto)
+                .toList();
     }
 
-    public void takeTime(User user, LocalDateTime dateTime) {
-        UserTicket ticket = new UserTicket(
-                UUID.randomUUID(),
-                dateTime,
-                user
-        );
-
-        busyTime.add(ticket);
-        log.info(ticket.toString());
+    private List<Ticket> createTicketForRoom(Room room, List<LocalDateTime> todaySchedule) {
+        return todaySchedule.stream()
+                .map(it -> new Ticket(it, room))
+                .toList();
     }
 }

@@ -1,6 +1,5 @@
 package ru.razbezhkin.electronicqueue.UI;
 
-
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.formlayout.FormLayout.ResponsiveStep;
@@ -11,20 +10,16 @@ import com.vaadin.flow.dom.ThemeList;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.theme.lumo.Lumo;
 import lombok.RequiredArgsConstructor;
-import ru.razbezhkin.electronicqueue.domain.User;
 import ru.razbezhkin.electronicqueue.service.TicketService;
 
 import javax.annotation.PostConstruct;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-@Route("/")
+@Route("/api/v2/")
 @RequiredArgsConstructor
 public class MainUI extends VerticalLayout {
 
     private final TicketService ticketService;
-    private final User testUser = new User("Sasha", "Razbezhkin", "alerkandr@mail.ru", "999-99-99");
 
     @PostConstruct
     public void init() {
@@ -48,11 +43,6 @@ public class MainUI extends VerticalLayout {
             }
         });
 
-        ticketService.getInitialTimeForTicket()
-                .stream()
-                .map(this::createButtonTime)
-                .forEach(formLayout::add);
-
         formLayout.setSizeFull();
 
         times.add(formLayout);
@@ -68,11 +58,6 @@ public class MainUI extends VerticalLayout {
     private Button createButtonTime(LocalTime time) {
 
         Button button = new Button(time.toString());
-
-        button.addClickListener(event -> {
-            ticketService.takeTime(testUser, LocalDateTime.of(LocalDate.now(), time));
-            button.setEnabled(false);
-        });
 
         return button;
     }
