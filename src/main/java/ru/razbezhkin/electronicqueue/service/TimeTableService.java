@@ -16,13 +16,15 @@ public class TimeTableService {
         List<LocalTime> result = new ArrayList<>();
         LocalTime currentTime = START_TIME;
         while (!currentTime.equals(END_TIME)) {
-            result.add(currentTime);
-            currentTime = currentTime.plusHours(1);
+            if (currentTime.isAfter(LocalTime.now())) {
+                result.add(currentTime);
+            }
+            currentTime = currentTime.plusMinutes(30);
         }
         return result;
     }
 
-    public boolean isTimeInBorder(LocalTime time){
+    public boolean isTimeInBorder(LocalTime time) {
         return !START_TIME.isBefore(time) && !END_TIME.isAfter(time);
     }
 

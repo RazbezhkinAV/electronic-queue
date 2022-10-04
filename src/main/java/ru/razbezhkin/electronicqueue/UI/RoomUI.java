@@ -27,11 +27,13 @@ public class RoomUI extends VerticalLayout {
     private final RoomService roomService;
     private final TicketService ticketService;
 
+    private final HeaderLogout headerLogout;
+
     @PostConstruct
     public void init() {
         setDefaultHorizontalComponentAlignment(Alignment.CENTER);
         setSizeFull();
-        add(new H1("Take Rooms"));
+        add(headerLogout, new H1("Take Rooms"));
 
         roomService.getAllRooms()
                 .forEach(this::createRoomsButton);

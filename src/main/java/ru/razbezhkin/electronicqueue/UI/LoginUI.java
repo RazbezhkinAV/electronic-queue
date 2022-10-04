@@ -41,7 +41,7 @@ public class LoginUI extends VerticalLayout {
         Button loginButton = new Button("Login");
 
         loginButton.addClickListener(event -> {
-            securityService.authenticate(login.getValue(),password.getValue());
+            securityService.authenticate(login.getValue(), password.getValue());
         });
 
         HorizontalLayout buttonLayout = new HorizontalLayout(regButton, loginButton);
