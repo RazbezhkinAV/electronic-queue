@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "tickets")
+@Table(name = "ticket")
 @Data
 @NoArgsConstructor
 public class Ticket {
@@ -17,8 +17,8 @@ public class Ticket {
     private LocalDateTime time;
     private LocalDateTime created;
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User user;
+    @JoinColumn(name = "visitor_id", referencedColumnName = "id")
+    private Visitor visitor;
     @ManyToOne
     @JoinColumn(name = "room_id", referencedColumnName = "id")
     private Room room;
