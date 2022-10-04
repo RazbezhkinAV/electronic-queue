@@ -23,8 +23,7 @@ public class MainUI extends VerticalLayout {
 
     @PostConstruct
     public void init() {
-        setDefaultHorizontalComponentAlignment(Alignment.CENTER);
-        setSizeFull();
+
         getElement().getThemeList().add(Lumo.DARK);
 
         HorizontalLayout times = new HorizontalLayout();
