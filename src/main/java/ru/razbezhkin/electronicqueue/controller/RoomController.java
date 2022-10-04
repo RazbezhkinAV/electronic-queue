@@ -25,7 +25,7 @@ public class RoomController {
         return roomService.getAllRooms();
     }
 
-    @GetMapping("name-{roomName}/today-free-tickets")
+    @GetMapping("{roomName}/today-free-tickets")
     public List<TicketDto> getTodayFreeTickets (@PathVariable("roomName") String roomName) {
         return ticketService.getTodayFreeTicketsByRoomName(roomName);
     }

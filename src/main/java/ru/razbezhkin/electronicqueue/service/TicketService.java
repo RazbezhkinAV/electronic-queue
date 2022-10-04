@@ -26,20 +26,20 @@ public class TicketService {
     private final TicketRepository ticketRepository;
     private final TimeTableService timeTableService;
     private final RoomService roomService;
-    private final UserService userService;
+    private final VisitorService visitorService;
 
     public TicketDto saveTicket(ReservationData reservationData) {
-        User user = userService.getUserByFirstName(reservationData.userLogin());
+        Visitor visitor = visitorService.getUserByLogin(reservationData.userLogin());
         Room room = roomService.getRoomByName(reservationData.roomName());
         LocalTime reservedTime = DateUtils.toLocalTime(reservationData.time());
 
-        if(user == null || room == null || timeTableService.isTimeInBorder(reservedTime)) {
+        if(visitor == null || room == null || timeTableService.isTimeInBorder(reservedTime)) {
             return null;
         }
 
         Ticket ticket = new Ticket();
         ticket.setCreated(LocalDateTime.now());
-        ticket.setUser(user);
+        ticket.setVisitor(visitor);
         ticket.setRoom(room);
         ticket.setTime(LocalDateTime.of(LocalDate.now(),reservedTime));
 
